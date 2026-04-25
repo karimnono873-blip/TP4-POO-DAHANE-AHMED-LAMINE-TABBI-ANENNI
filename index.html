@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compte Rendu TP N°04 - POO - Galaxy Edition</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette Deep Space / Cyber-Admin */
+            --space-darkest: #030308;
+            --space-dark: #0a0a1a;
+            --space-light: #151530;
+            
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-pink: #ff007f;
+            --neon-gold: #ffd700;
+            --neon-red: #ff3333;
+            --neon-green: #39ff14;
+            
+            --text-main: #e0e0ff;
+            --text-muted: #8b8bb4;
+            
+            --glow-cyan: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3);
+            --glow-purple: 0 0 10px rgba(188, 19, 254, 0.5), 0 0 20px rgba(188, 19, 254, 0.3);
+            
+            --border-radius-lg: 20px;
+            --border-radius-md: 12px;
+            --border-radius-sm: 8px;
+            
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        @keyframes drift {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 500px; }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--space-darkest);
+            color: var(--text-main);
+            line-height: 1.7;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, rgba(0, 243, 255, 0.8), rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 90px 40px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: drift 120s linear infinite;
+        }
+
+        .master-container {
+            max-width: 1100px;
+            margin: 50px auto;
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 243, 255, 0.05);
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header-section {
+            background: linear-gradient(180deg, rgba(188, 19, 254, 0.15) 0%, rgba(10, 10, 26, 0) 100%);
+            padding: 70px 40px;
+            text-align: center;
+            border-bottom: 1px solid rgba(188, 19, 254, 0.3);
+        }
+
+        .univ-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--neon-cyan);
+            margin-bottom: 20px;
+            text-shadow: var(--glow-cyan);
+        }
+
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(188, 19, 254, 0.4));
+        }
+
+        .sub-title {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .student-card {
+            background: rgba(21, 21, 48, 0.6);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            padding: 25px 40px;
+            border-radius: var(--border-radius-md);
+            display: inline-block;
+            text-align: left;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .highlight-name {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--neon-gold);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            letter-spacing: 1px;
+            font-size: 1.2rem;
+        }
+
+        /* CONTENT */
+        .content-body { padding: 50px 60px; }
+
+        h2.section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--neon-cyan);
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            display: flex;
+            align-items: center;
+        }
+
+        h2.section-title::before {
+            content: '>>';
+            color: var(--neon-purple);
+            margin-right: 15px;
+        }
+
+        p.text-paragraph {
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            text-align: justify;
+            color: #b0b0c0;
+        }
+
+        .uml-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-left: 4px solid var(--neon-purple);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+            font-family: 'Fira Code', monospace;
+            color: var(--neon-cyan);
+        }
+
+        /* CODE JAVA */
+        .code-container {
+            background-color: #05050a;
+            border: 1px solid #2a2a4a;
+            border-radius: var(--border-radius-md);
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-container::before {
+            content: 'CORE: JAVA OOP ARCHITECTURE';
+            position: absolute;
+            top: 0; right: 0;
+            background: var(--neon-purple);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .code-container pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .stx-kw { color: #ff79c6; font-weight: bold; } 
+        .stx-ty { color: #8be9fd; } 
+        .stx-str { color: #f1fa8c; } 
+        .stx-com { color: #6272a4; font-style: italic; } 
+        .stx-num { color: #bd93f9; } 
+        .stx-fn { color: #50fa7b; } 
+
+        /* INTERFACE D'EXECUTION (DASHBOARD) */
+        .dashboard-widget {
+            background: rgba(15, 15, 30, 0.7);
+            border: 1px solid rgba(188, 19, 254, 0.4);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 30px rgba(188, 19, 254, 0.05);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .form-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--neon-cyan);
+            letter-spacing: 1px;
+        }
+
+        .input-group input, .input-group select {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            color: white;
+            padding: 12px;
+            border-radius: var(--border-radius-sm);
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--neon-purple);
+            box-shadow: inset 0 0 10px rgba(188, 19, 254, 0.3);
+        }
+
+        .btn-calc {
+            background: transparent;
+            color: var(--neon-gold);
+            border: 2px solid var(--neon-gold);
+            padding: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: var(--transition-smooth);
+            margin-top: 10px;
+            box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .btn-calc:hover {
+            background: var(--neon-gold);
+            color: #000;
+            box-shadow: var(--glow-cyan);
+        }
+
+        /* RESULT PANEL */
+        .result-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: var(--border-radius-md);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(to right, transparent, var(--neon-cyan), transparent);
+        }
+
+        .hologram-card {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .hologram-name {
+            font-family: 'Orbitron', sans-serif;
+            color: white;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hologram-role {
+            color: var(--neon-purple);
+            font-size: 0.9rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            padding: 15px 0;
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+        }
+
+        .val-pos { color: var(--neon-green); }
+        .val-neg { color: var(--neon-red); }
+
+        .total-box {
+            text-align: center;
+        }
+
+        .total-label {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .total-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: var(--glow-cyan);
+            margin-top: 5px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-widget { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="master-container">
+        
+        <header class="header-section">
+            <div class="univ-title">USTHB FGE - Dpt Automatique - M1 AII</div>
+            <h1 class="main-title">COMPTE RENDU TP N°04</h1>
+            <h2 class="sub-title">Conception Avancée : Programmation Orientée Objet</h2>
+            
+            <div class="student-card">
+                <p style="color: var(--text-muted); font-size:0.9rem;">Officier Ingénieur :</p>
+                <p class="highlight-name">Dahane Ahmed Lamine</p>
+                <br>
+                <p style="color: var(--text-muted); font-size:0.9rem;">Superviseur Système :</p>
+                <p style="color: white; font-family: 'Orbitron', sans-serif;">Professeur MENANI</p>
+            </div>
+        </header>
+
+        <main class="content-body">
+            
+            <h2 class="section-title">1. Objectifs de la Mission Architecturale</h2>
+            <p class="text-paragraph">
+                L'objectif de ce projet est l'application exhaustive des paradigmes de la <strong>Programmation Orientée Objet (POO)</strong>. 
+                Contrairement à la programmation procédurale, la POO nous permet de modéliser le système de paie d'une entreprise nationale sous forme d'entités logiques interagissant entre elles. 
+            </p>
+            
+            <div class="uml-box">
+                // ARCHITECTURE DU SYSTÈME DÉPLOYÉ :<br>
+                > [Interface] <strong>ICalculable</strong> : Définit le contrat "calculerSalaire()"<br>
+                > [Classe Abstraite] <strong>Employe</strong> : Encapsule les attributs universels (Nom, Salaire de base...)<br>
+                > [Héritage] <strong>Administratif</strong> extends Employe : Spécialisation avec primes de poste.<br>
+                > [Héritage] <strong>Standard</strong> extends Employe : Traitement classique.
+            </div>
+
+            <p class="text-paragraph">
+                Le modèle garantit la <strong>sécurité des données (Encapsulation)</strong> grâce aux modificateurs <code>private</code> et <code>protected</code>. L'utilisation d'une interface assure le <strong>Polymorphisme</strong>, permettant au noyau central de traiter n'importe quel type d'employé (Chef de service, Agent, etc.) de manière uniforme lors du calcul du solde net.
+            </p>
+
+            <h2 class="section-title">2. Implémentation Logicielle : Core Java</h2>
+            <p class="text-paragraph">
+                Le code ci-dessous représente la hiérarchie des classes développées pour répondre au cahier des charges (Calcul des primes familiales, primes administratives, sécurité sociale à 7% et retenues d'absences à 0.5%/jour).
+            </p>
+
+            <div class="code-container">
+<pre><code><span class="stx-kw">package</span> dz.usthb.automatisation.rh;
+
+<span class="stx-com">/**
+ * Contrat garantissant que toute entité possède une méthode de calcul de paie.
+ */</span>
+<span class="stx-kw">interface</span> <span class="stx-ty">ICalculable</span> {
+    <span class="stx-kw">double</span> <span class="stx-fn">calculerSalaireNet</span>();
+}
+
+<span class="stx-com">/**
+ * Classe Abstraite définissant le noyau d'un employé.
+ */</span>
+<span class="stx-kw">abstract class</span> <span class="stx-ty">Employe</span> <span class="stx-kw">implements</span> <span class="stx-ty">ICalculable</span> {
+    <span class="stx-com">// Encapsulation stricte</span>
+    <span class="stx-kw">private</span> String nom;
+    <span class="stx-kw">private</span> String prenom;
+    <span class="stx-kw">private</span> String dateNaissance;
+    
+    <span class="stx-com">// Protected pour l'héritage</span>
+    <span class="stx-kw">protected double</span> salaireBase;
+    <span class="stx-kw">protected int</span> nbEnfants;
+    <span class="stx-kw">protected int</span> joursAbsence;
+
+    <span class="stx-com">// Constructeur paramétré</span>
+    <span class="stx-kw">public</span> <span class="stx-fn">Employe</span>(String nom, String prenom, <span class="stx-kw">double</span> base, <span class="stx-kw">int</span> enfants, <span class="stx-kw">int</span> abs) {
+        <span class="stx-kw">this</span>.nom = nom;
+        <span class="stx-kw">this</span>.prenom = prenom;
+        <span class="stx-kw">this</span>.salaireBase = base;
+        <span class="stx-kw">this</span>.nbEnfants = enfants;
+        <span class="stx-kw">this</span>.joursAbsence = abs;
+    }
+
+    <span class="stx-com">// Méthodes d'instances communes (Polymorphisme interne)</span>
+    <span class="stx-kw">protected double</span> <span class="stx-fn">getPrimeFamiliale</span>() {
+        <span class="stx-kw">return</span> nbEnfants * <span class="stx-num">300.0</span>;
+    }
+
+    <span class="stx-kw">protected double</span> <span class="stx-fn">getRetenues</span>() {
+        <span class="stx-kw">double</span> secSociale = salaireBase * <span class="stx-num">0.07</span>;
+        <span class="stx-kw">double</span> penalite = joursAbsence * (salaireBase * <span class="stx-num">0.005</span>);
+        <span class="stx-kw">return</span> secSociale + penalite;
+    }
+
+    <span class="stx-kw">public</span> String <span class="stx-fn">getIdentite</span>() {
+        <span class="stx-kw">return</span> nom.toUpperCase() + <span class="stx-str">" "</span> + prenom;
+    }
+}
+
+<span class="stx-com">/**
+ * Spécialisation : L'employé administratif avec surcharge des primes.
+ */</span>
+<span class="stx-kw">class</span> <span class="stx-ty">Administratif</span> <span class="stx-kw">extends</span> <span class="stx-ty">Employe</span> {
+    <span class="stx-kw">private</span> String poste;
+
+    <span class="stx-com">// Appel au constructeur de la classe Mère (super)</span>
+    <span class="stx-kw">public</span> <span class="stx-fn">Administratif</span>(String nom, String prm, <span class="stx-kw">double</span> b, <span class="stx-kw">int</span> enf, <span class="stx-kw">int</span> abs, String poste) {
+        <span class="stx-kw">super</span>(nom, prm, b, enf, abs);
+        <span class="stx-kw">this</span>.poste = poste;
+    }
+
+    <span class="stx-com">// Redéfinition (Override) de la méthode de l'interface</span>
+    <span class="stx-kw">@Override</span>
+    <span class="stx-kw">public double</span> <span class="stx-fn">calculerSalaireNet</span>() {
+        <span class="stx-kw">double</span> primePoste = <span class="stx-num">0</span>;
+        
+        <span class="stx-kw">if</span> (poste.equals(<span class="stx-str">"Chef de service"</span>)) {
+            primePoste = salaireBase * <span class="stx-num">0.03</span>;
+        } <span class="stx-kw">else if</span> (poste.equals(<span class="stx-str">"Chef de bureau"</span>)) {
+            primePoste = salaireBase * <span class="stx-num">0.02</span>;
+        }
+
+        <span class="stx-com">// Salaire Brut Réel = Base + Primes - Retenues</span>
+        <span class="stx-kw">return</span> salaireBase + primePoste + getPrimeFamiliale() - getRetenues();
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">3. Module de Télémétrie UI (Test Interactif)</h2>
+            <p class="text-paragraph">
+                Le module ci-dessous est une représentation Web (Interface Graphique) de l'algorithme POO Java développé. 
+                Saisissez les paramètres de l'employé pour visualiser le calcul des flux financiers (Primes et Retenues) en temps réel. Testez avec l'exemple du TP (Base: 20000, 2 enfants, 3 abs, Chef de service) pour vérifier le résultat de <strong>19500 DA</strong>.
+            </p>
+
+            <div class="dashboard-widget">
+                
+                <div class="form-panel">
+                    <div style="display: flex; gap: 15px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label>NOM</label>
+                            <input type="text" id="inNom" value="Dahane" placeholder="Votre Nom">
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label>PRÉNOM</label>
+                            <input type="text" id="inPrenom" value="Ahmed Lamine" placeholder="Votre Prénom">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>SALAIRE DE BASE FIXE (DA)</label>
+                        <input type="number" id="inBase" value="20000" min="0">
+                    </div>
+
+                    <div style="display: flex; gap: 15px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label>ENFANTS (< 18 ANS)</label>
+                            <input type="number" id="inEnfants" value="2" min="0">
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label>JOURS D'ARRÊT</label>
+                            <input type="number" id="inAbs" value="3" min="0">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>POSTE ADMINISTRATIF</label>
+                        <select id="inPoste">
+                            <option value="Chef de service">Chef de service (Prime 3%)</option>
+                            <option value="Chef de bureau">Chef de bureau (Prime 2%)</option>
+                            <option value="Standard">Standard (Aucune prime)</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-calc" onclick="calculerSolde()">Calculer le Solde</button>
+                </div>
+
+                <div class="result-panel">
+                    <div class="hologram-card">
+                        <div class="hologram-name" id="outName">DAHANE AHMED LAMINE</div>
+                        <div class="hologram-role" id="outRole">CHEF DE SERVICE</div>
+                    </div>
+
+                    <div class="breakdown">
+                        <div class="breakdown-row">
+                            <span>Salaire de Base</span>
+                            <span id="outBase">20000.00 DA</span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Prime Familiale (300 DA/enf.)</span>
+                            <span class="val-pos" id="outPrimeEnf">+ 600.00 DA</span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Prime Administrative</span>
+                            <span class="val-pos" id="outPrimePoste">+ 600.00 DA</span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Sécurité Sociale (7%)</span>
+                            <span class="val-pos val-neg" id="outSecSoc">- 1400.00 DA</span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Retenues Absences (0.5%/jour)</span>
+                            <span class="val-pos val-neg" id="outAbs">- 300.00 DA</span>
+                        </div>
+                    </div>
+
+                    <div class="total-box">
+                        <div class="total-label">SALAIRE BRUT CALCULÉ</div>
+                        <div class="total-value" id="outTotal">19500.00</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function calculerSolde() {
+            // 1. Récupération des données du DOM
+            const nom = document.getElementById('inNom').value || 'INCONNU';
+            const prenom = document.getElementById('inPrenom').value || '';
+            const base = parseFloat(document.getElementById('inBase').value) || 0;
+            const enfants = parseInt(document.getElementById('inEnfants').value) || 0;
+            const absences = parseInt(document.getElementById('inAbs').value) || 0;
+            const poste = document.getElementById('inPoste').value;
+
+            // 2. Traitement Algorithmique (Logique métier POO)
+            const primeEnfants = enfants * 300;
+            
+            let primePoste = 0;
+            if (poste === 'Chef de service') primePoste = base * 0.03;
+            else if (poste === 'Chef de bureau') primePoste = base * 0.02;
+
+            const secSoc = base * 0.07;
+            const retenueAbs = absences * (base * 0.005);
+            
+            // Calcul final
+            const net = base + primeEnfants + primePoste - secSoc - retenueAbs;
+
+            // 3. Mise à jour de l'Hologramme (UI)
+            document.getElementById('outName').innerText = `${nom.toUpperCase()} ${prenom.toUpperCase()}`;
+            document.getElementById('outRole').innerText = poste.toUpperCase();
+            
+            document.getElementById('outBase').innerText = base.toFixed(2) + ' DA';
+            document.getElementById('outPrimeEnf').innerText = '+ ' + primeEnfants.toFixed(2) + ' DA';
+            document.getElementById('outPrimePoste').innerText = '+ ' + primePoste.toFixed(2) + ' DA';
+            document.getElementById('outSecSoc').innerText = '- ' + secSoc.toFixed(2) + ' DA';
+            document.getElementById('outAbs').innerText = '- ' + retenueAbs.toFixed(2) + ' DA';
+            
+            // Animation du total pour effet Dashboard
+            animateValue("outTotal", 0, net, 1000);
+        }
+
+        // Fonction utilitaire pour l'animation des nombres
+        function animateValue(id, start, end, duration) {
+            if (start === end) return;
+            let range = end - start;
+            let current = start;
+            let increment = end > start ? 1 : -1;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            if (stepTime < 20) stepTime = 20; // limite la vitesse d'update
+            
+            let obj = document.getElementById(id);
+            let steps = duration / stepTime;
+            let valueStep = range / steps;
+            
+            let timer = setInterval(function() {
+                current += valueStep;
+                if ((valueStep > 0 && current >= end) || (valueStep < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                obj.innerHTML = current.toFixed(2) + ' DA';
+            }, stepTime);
+        }
+
+        // Exécution initiale au chargement
+        window.onload = calculerSolde;
+    </script>
+</body>
+</html>
